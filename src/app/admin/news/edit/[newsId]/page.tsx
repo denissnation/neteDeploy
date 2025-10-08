@@ -78,6 +78,7 @@ export default function EditNews() {
   }, [imageFile]);
 
   useEffect(() => {
+    document.title = "Form Edit Berita";
     const fetchNews = async () => {
       try {
         const response = await fetch(`/api/news/${newsId}`);
@@ -227,20 +228,13 @@ export default function EditNews() {
             </div>
 
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Oops! Vehicle Missing
+              Oops! Mobil Tidak Tersedia
             </h1>
             <p className="text-gray-600 mb-8 text-lg">
-              We searched everywhere but couldnt find this vehicle in our
-              showroom.
+              Kita Tidak Menemukan Mobil Di Showroom
             </p>
 
             <div className="space-y-4">
-              <a
-                href="/admin/cars"
-                className="block w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition shadow-lg"
-              >
-                Explore Our Vehicles
-              </a>
               <button
                 onClick={() => window.history.back()}
                 className="block w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-6 rounded-lg font-medium transition"
@@ -259,13 +253,13 @@ export default function EditNews() {
         {" "}
         {/* Added pt-24 to account for fixed navbar */}
         <div className="max-w-2xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">TAMBAH MOBIL</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">TAMBAH BERITA</h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md"
           >
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
-              Create New News
+              Buat Berita Baru
             </h2>
 
             {/* Title Field */}
@@ -274,7 +268,7 @@ export default function EditNews() {
                 htmlFor="title"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                News Title *
+                Judul Berita *
               </label>
               <input
                 id="title"
@@ -299,7 +293,7 @@ export default function EditNews() {
                 htmlFor="body"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                News Content *
+                Isi Berita *
               </label>
               <textarea
                 id="body"
@@ -324,7 +318,7 @@ export default function EditNews() {
                 htmlFor="image"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                News Image *
+                Gambar Berita *
               </label>
               <input
                 id="image"
@@ -390,10 +384,10 @@ export default function EditNews() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Submitting...
+                  Menyimpan...
                 </span>
               ) : (
-                "Publish News"
+                "Terbitkan Berita"
               )}
             </button>
           </form>

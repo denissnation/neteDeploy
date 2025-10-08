@@ -91,7 +91,7 @@ export default async function NewsDetail({ params }: Props) {
             <ol className="inline-flex items-center space-x-1 md:space-x-2">
               <li className="inline-flex items-center">
                 <Link href="/" className="hover:text-blue-600">
-                  Home
+                  Beranda
                 </Link>
               </li>
               <li>
@@ -108,7 +108,7 @@ export default async function NewsDetail({ params }: Props) {
                     />
                   </svg>
                   <Link href="/news" className="hover:text-blue-600">
-                    News
+                    Berita
                   </Link>
                 </div>
               </li>

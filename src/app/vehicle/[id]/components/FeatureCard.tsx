@@ -10,12 +10,13 @@ interface Feature {
 export default function FeatureCard({ feature }: { feature: Feature }) {
   return (
     <div
-      className="bg-white text-center h-[270px] md:h-[350px] flex items-center justify-center bg-cover bg-center bg-no-repeat w-full"
+      className=" relative text-center h-[270px] md:h-[350px] flex items-center justify-center bg-cover bg-center bg-no-repeat w-full"
       style={{
-        backgroundImage: `url('${feature.feature_img}')`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),url('${feature.feature_img}')`,
       }}
     >
-      <div className="text-xl font-medium text-white bg-black bg-opacity-40 px-4 py-2 rounded">
+      {/* <div className="absolute inset-0 bg-black opacity-50"></div> */}
+      <div className="text-xl font-medium text-white ">
         {feature.feature_name}
       </div>
     </div>

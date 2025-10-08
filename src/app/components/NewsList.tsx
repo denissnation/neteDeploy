@@ -58,7 +58,7 @@ export default function NewsList({ initialNews }: { initialNews: NewsItem[] }) {
                   />
                 </svg>
                 <Link href="/news" className="hover:text-blue-600">
-                  News
+                  Berita
                 </Link>
               </div>
             </li>
@@ -66,7 +66,7 @@ export default function NewsList({ initialNews }: { initialNews: NewsItem[] }) {
         </nav>
         <h2 className="text-3xl font-bold text-center mb-4">BERITA TERBARU</h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Temukan berita terupdate seputar NETA dan industri otomotif elektrik
+          Temukan berita terupdate seputar GWM dan industri otomotif elektrik
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

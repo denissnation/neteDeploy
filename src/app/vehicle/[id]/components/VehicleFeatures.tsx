@@ -39,11 +39,9 @@ export default function VehicleFeatures({
 
   return (
     <div className="pt-16 bg-gray-100">
-      <h2 className="text-3xl font-bold text-center mb-12 bg-gray-700">
-        HIGHLIGHT
-      </h2>
+      <h2 className="text-3xl font-bold text-center mb-12 ">HIGHLIGHT</h2>
       <Suspense fallback={<FeatureSkeleton />}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
+        <div className="bg-gray-400 grid grid-cols-1 sm:grid-cols-2 gap-0">
           {features.map((feature, index) => (
             <div
               key={feature.feature_id}

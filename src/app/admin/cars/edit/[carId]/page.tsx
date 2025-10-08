@@ -39,6 +39,7 @@ export default function EditCarPage() {
 
   // Fetch car data
   useEffect(() => {
+    document.title = "Form Edit Mobil";
     const fetchCar = async () => {
       try {
         const response = await fetch(`/api/vehicles/${carsId}`);
@@ -319,7 +320,7 @@ export default function EditCarPage() {
   return (
     <div className="bg-white text-gray-900 font-sans">
       {}
-      <div className="pt-24 pb-16 bg-gray-100">
+      <div className="pt-28 pb-16 bg-gray-100">
         <div className="max-w-2xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">EDIT MOBIL</h2>
 
@@ -344,22 +345,46 @@ export default function EditCarPage() {
             </div>
 
             {/* Vehicle Price */}
-            <div>
-              <label
-                htmlFor="harga"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Harga*
-              </label>
-              <input
-                type="text"
-                id="harga"
-                name="harga"
-                value={formData.harga}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="harga"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Harga*
+                </label>
+                <input
+                  type="text"
+                  id="harga"
+                  name="harga"
+                  value={formData.harga}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="mesin"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Mesin*
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="mesin"
+                    name="mesin"
+                    value={formData.mesin}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    required
+                  />
+                  <span className="absolute inset-y-0 right-0 flex items-center text-white font-bold text-sm bg-slate-400 rounded-r-lg border p-4">
+                    CC
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Vehicle Specs */}
@@ -371,15 +396,20 @@ export default function EditCarPage() {
                 >
                   Tenaga (HP)*
                 </label>
-                <input
-                  type="text"
-                  id="tenaga"
-                  name="tenaga"
-                  value={formData.tenaga}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="tenaga"
+                    name="tenaga"
+                    value={formData.tenaga}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    required
+                  />
+                  <span className="absolute inset-y-0 right-0 flex items-center text-white font-bold text-sm bg-slate-400 rounded-r-lg border p-4">
+                    Hp
+                  </span>
+                </div>
               </div>
               <div>
                 <label
@@ -388,36 +418,24 @@ export default function EditCarPage() {
                 >
                   Torsi (Nm)*
                 </label>
-                <input
-                  type="text"
-                  id="torsi"
-                  name="torsi"
-                  value={formData.torsi}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="torsi"
+                    name="torsi"
+                    value={formData.torsi}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    required
+                  />
+                  <span className="absolute inset-y-0 right-0 flex items-center text-white font-bold text-sm bg-slate-400 rounded-r-lg border p-4">
+                    Nm
+                  </span>
+                </div>
               </div>
             </div>
 
             {/* Engine */}
-            <div>
-              <label
-                htmlFor="mesin"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Mesin*
-              </label>
-              <input
-                type="text"
-                id="mesin"
-                name="mesin"
-                value={formData.mesin}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                required
-              />
-            </div>
 
             {/* Model Selection */}
             <div>

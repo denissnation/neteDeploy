@@ -107,6 +107,7 @@ function AdminCarList() {
   };
 
   useEffect(() => {
+    document.title = "Daftar Mobil Admin";
     const updateStatus = searchParams.get("update");
     if (updateStatus === "success") {
       setNotification({
@@ -220,7 +221,7 @@ function AdminCarList() {
               href="/admin/cars/add"
               className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
             >
-              <FiPlus /> Add New Car
+              <FiPlus /> Tambah Mobil Baru
             </Link>
           </div>
         </header>

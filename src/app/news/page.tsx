@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 export async function generateMetadata() {
   return createSEO({
     type: "website",
-    title: "Berita & Promo Terbaru GWM Medan",
+    title: "Berita Terbaru GWM Medan",
     description:
       "Update terbaru seputar produk, promo, dan event GWM di dealer resmi Kota Medan",
     keywords: ["berita GWM", "promo mobil Medan", "event GWM"],

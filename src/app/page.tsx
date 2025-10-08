@@ -8,7 +8,7 @@ import { createSEO } from "@/lib/seo";
 export async function generateMetadata() {
   return createSEO({
     type: "website",
-    title: "GWM Dealer Resmi Kota Medan ",
+    title: "GWM Kota Medan ",
     description:
       "Temukan mobil GWM terbaru di showroom resmi Kota Medan. Dapatkan harga spesial, dan test drive Great Wall Motor ORA, Haval, dan Tank.",
     keywords: [

@@ -108,6 +108,7 @@ function AdminNewsList() {
     }
   };
   useEffect(() => {
+    document.title = "Daftar berita Admin";
     const updateStatus = searchParams.get("update");
     if (updateStatus === "success") {
       setNotification({
@@ -217,7 +218,7 @@ function AdminNewsList() {
               href="/admin/news/addNews"
               className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
             >
-              <FiPlus /> Add New News
+              <FiPlus /> Tambah Berita Baru
             </Link>
           </div>
         </header>

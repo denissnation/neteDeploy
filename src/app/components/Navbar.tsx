@@ -81,7 +81,7 @@ export default function Navbar() {
       } `}
     >
       <div className={`max-w-6xl mx-auto sm:px-4`}>
-        <div className="flex justify-between items-center pl-4 sm:pl-0 py-2 sm:py-4">
+        <div className="flex justify-between items-center pl-4 sm:pl-0 py-3 sm:py-6">
           {/* Logo */}
           <div className="text-2xl font-bold text-gray-800">
             <Link href="/" onClick={() => setIsOpen(false)}>
@@ -99,8 +99,8 @@ export default function Navbar() {
           <div
             className={`hidden sm:flex space-x-8  font-semibold pr-4  sm:pr-0 `}
           >
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/news">News</NavLink>
+            <NavLink href="/">Beranda</NavLink>
+            <NavLink href="/news">Berita</NavLink>
             <NavLink href="/contact">Testimoni</NavLink>
             {isAuthenticated && (
               <div className="relative" ref={dropdownRef}>
@@ -132,20 +132,20 @@ export default function Navbar() {
                       href="/admin/cars"
                       className="block px-4 py-2 text-black sm:text-[#ffff] hover:bg-[#d7000f] rounded-lg transition-colors duration-200"
                     >
-                      Vehicle
+                      Daftar Mobil
                     </Link>
                     <Link
                       href="/admin/news"
                       className="block px-4 py-2 text-[#ffff] hover:text-[#d7000f] transition-colors duration-200"
                     >
-                      News
+                      Daftar Berita
                     </Link>
                     <button
                       // onClick={() => signOut()}
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-[#ffff] hover:text-[#d7000f] transition-colors duration-200"
                     >
-                      Sign Out
+                      Keluar
                     </button>
                   </div>
                 )}

@@ -1,6 +1,6 @@
 // app/contact/page.tsx
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
@@ -9,7 +9,9 @@ export default function UploadForm() {
   const [isLoading, setIsLoading] = useState(false); // Loading state for the button
   const router = useRouter(); // Router for redirection
   const [fileInputs, setFileInputs] = useState([0]); // Start with one file input
-
+  useEffect(() => {
+    document.title = "Form Tambah Mobil";
+  }, []);
   const handleAddFileInput = () => {
     if (fileInputs.length < 4) {
       setFileInputs([...fileInputs, fileInputs.length]);
@@ -90,75 +92,93 @@ export default function UploadForm() {
                 id="nama"
                 name="nama"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                placeholder="500"
+                placeholder="GWM Tank 500"
                 required
               />
             </div>
-            <div>
-              <label
-                htmlFor="harga"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Harga
-              </label>
-              <input
-                type="harga"
-                id="harga"
-                name="harga"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                placeholder="500"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="harga"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Harga
+                </label>
+                <input
+                  type="harga"
+                  id="harga"
+                  name="harga"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                  placeholder="450000000"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="mesin"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Mesin (Cc)*
+                </label>
+                <div className="relative">
+                  <input
+                    type="mesin"
+                    id="mesin"
+                    name="mesin"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    placeholder="2300"
+                    required
+                  />
+                  <span className="absolute inset-y-0 right-0 flex items-center text-white font-bold text-sm bg-slate-400 rounded-r-lg border p-4">
+                    CC
+                  </span>
+                </div>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="mesin"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Mesin*
-              </label>
-              <input
-                type="mesin"
-                id="mesin"
-                name="mesin"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                placeholder="500"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="tenaga"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Tenaga (Hp)*
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    id="tenaga"
+                    name="tenaga"
+                    className="w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    placeholder="178"
+                    required
+                  />
+                  <span className="absolute inset-y-0 right-0 flex items-center text-white font-bold text-sm bg-slate-400 rounded-r-lg border p-4">
+                    HP
+                  </span>
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="torsi"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Torsi (Nm)*
+                </label>
+                <div className="relative">
+                  <input
+                    type="torsi"
+                    id="torsi"
+                    name="torsi"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    placeholder="430"
+                    required
+                  />
+                  <span className="absolute inset-y-0 right-0 flex items-center text-white font-bold text-sm bg-slate-400 rounded-r-lg border p-4">
+                    Nm
+                  </span>
+                </div>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="tenaga"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                tenaga*
-              </label>
-              <input
-                type="tenaga"
-                id="tenaga"
-                name="tenaga"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                placeholder="500"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="torsi"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Torsi*
-              </label>
-              <input
-                type="torsi"
-                id="torsi"
-                name="torsi"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                placeholder="500"
-                required
-              />
-            </div>
-
             {/* Car Selection */}
             <div>
               <label
@@ -302,8 +322,8 @@ export default function UploadForm() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <div className="flex items-center">
-                    <span>Uploading...</span>
+                  <div className="flex items-center justify-center">
+                    <span>Menyimpan...</span>
                     <svg
                       className="animate-spin ml-2 h-5 w-5 text-white"
                       xmlns="http://www.w3.org/2000/svg"
