@@ -63,8 +63,8 @@ export default function NewsForm() {
         method: "POST",
         body: formData,
       });
-      const { success, status, error } = await response.json();
-      if (!success || status !== 201) throw new Error(error);
+      const { success, error } = await response.json();
+      if (!success) throw new Error(error);
       reset();
       router.push("/admin/news?update=success");
       setPreviewImage(null);

@@ -2,7 +2,7 @@ import { getVehicle } from "@/lib/vehicleActions";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-
+export const dynamic = "force-dynamic";
 export default async function VehicleLists() {
   const { vehicles, error } = await getVehicle();
   if (error) {

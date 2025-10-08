@@ -1,6 +1,6 @@
 // app/news/page.tsx
 
-import { getNews } from "@/lib/newsAction";
+// import { getNews } from "@/lib/newsAction";
 import NewsList from "../components/NewsList";
 import { createSEO } from "@/lib/seo";
 import { notFound } from "next/navigation";
@@ -18,16 +18,30 @@ export async function generateMetadata() {
 }
 
 export default async function NewsPage() {
-  const initialNews = await getNews(0);
+  // const initialNews = await getNews(0);
 
-  if (!initialNews.news || initialNews.news.length === 0) {
+  // if (!initialNews.news || initialNews.news.length === 0) {
+  //   notFound();
+  // }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/api/newsPublic?offset=0`,
+    {
+      cache: "no-store", // Important: disable caching
+      next: { revalidate: 0 }, // Disable revalidation
+    }
+  );
+  const { news } = await response.json();
+  console.log(news.length);
+  // const data = await response.json();
+  if (!news || news.length === 0) {
     notFound();
   }
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: initialNews.news.map((news: NewsItem, index: number) => ({
+    itemListElement: news.map((news: NewsItem, index: number) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -61,7 +75,7 @@ export default async function NewsPage() {
       />
       <div className="mt-12 bg-white text-gray-900 font-sans">
         {/* <Navbar /> */}
-        <NewsList initialNews={initialNews.news} />
+        <NewsList initialNews={news} />
         {/* <Footer /> */}
       </div>
     </>

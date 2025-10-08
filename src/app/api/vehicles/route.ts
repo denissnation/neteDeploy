@@ -544,7 +544,7 @@ export async function DELETE(request: NextRequest) {
       .from("tb_features")
       .select("*")
       .eq("featuresVehicle_id", id);
-    console.log(data);
+    // console.log(data);
     if (data && data.length > 0) {
       for (let i = 0; i < data.length; i++) {
         await del(data[i].feature_img);

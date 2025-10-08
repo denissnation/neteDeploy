@@ -7,9 +7,10 @@ import {
   FiPlus,
   FiChevronLeft,
   FiChevronRight,
+  FiLoader,
 } from "react-icons/fi";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useFormState } from "react-dom";
+// import { useFormState } from "react-dom";
 import { Suspense, useEffect, useState } from "react";
 import NotificationBanner from "../../components/NotificationBanner";
 import AdminTableSkeleton from "../../components/AdminTableSkeleton";
@@ -28,46 +29,84 @@ function AdminNewsList() {
     type: "success",
     show: false,
   });
-  const initialState = {
-    success: false,
-    error: null,
-    message: "",
-  };
-  interface State {
-    success: boolean;
-    error: string | null;
-    message: string;
-  }
+  // const initialState = {
+  //   success: false,
+  //   error: null,
+  //   message: "",
+  // };
+  // interface State {
+  //   success: boolean;
+  //   error: string | null;
+  //   message: string;
+  // }
   const { page, per_page } = useParams();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [state, formAction] = useFormState<State, FormData>(
-    async (prevState, formData) => {
-      try {
-        const response = await fetch("/api/news", {
-          method: "DELETE",
-          body: formData,
-        });
-        const { success, message } = await response.json();
+  const [isDeleting, setIsDeleting] = useState(false);
+  // const [state, formAction] = useFormState<State, FormData>(
+  //   async (prevState, formData) => {
+  //     try {
+  //       const response = await fetch("/api/news", {
+  //         method: "DELETE",
+  //         body: formData,
+  //       });
+  //       const { success, message } = await response.json();
+  //       setNotification({
+  //         message: message,
+  //         type: "success",
+  //         show: success,
+  //       });
+  //       return { ...prevState, success: true };
+  //     } catch (error) {
+  //       console.error(error);
+  //       setNotification({
+  //         message: "Failed to delete news",
+  //         type: "error",
+  //         show: true,
+  //       });
+  //       return { ...prevState, error: "Delete failed" };
+  //     }
+  //   },
+  //   initialState
+  // );
+  const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsDeleting(true);
+    const formData = new FormData(e.currentTarget);
+    const newsId = formData.get("id");
+    try {
+      const response = await fetch("/api/news", {
+        method: "DELETE",
+        body: formData,
+      });
+      const { success, message } = await response.json();
+
+      if (success) {
+        // Show success notification
+        setNews((news) =>
+          news.filter((item) => item.news_id !== Number(newsId))
+        );
         setNotification({
           message: message,
           type: "success",
           show: success,
         });
-        return { ...prevState, success: true };
-      } catch (error) {
-        console.error(error);
-        setNotification({
-          message: "Failed to delete news",
-          type: "error",
-          show: true,
-        });
-        return { ...prevState, error: "Delete failed" };
+        // window.location.reload();
+        // You might want to refresh the page or update the state
       }
-    },
-    initialState
-  );
-
+    } catch (error) {
+      console.error("Delete failed:", error);
+      setNotification({
+        message: "Failed to delete news",
+        type: "error",
+        show: true,
+      });
+      // return { ...prevState, error: "Delete failed" };
+      // Show error notification
+    } finally {
+      setIsDeleting(false);
+    }
+  };
   useEffect(() => {
     const updateStatus = searchParams.get("update");
     if (updateStatus === "success") {
@@ -110,7 +149,7 @@ function AdminNewsList() {
     };
 
     fetchNews();
-  }, [state, notification.show, router, searchParams]);
+  }, [notification.show, router, searchParams]);
 
   let currentPage = Number(page) || 1;
   const perPage = Number(per_page) || 10;
@@ -252,7 +291,7 @@ function AdminNewsList() {
                                 >
                                   <FiEdit /> Edit
                                 </Link>
-                                <form action={formAction}>
+                                <form onSubmit={handleDelete}>
                                   <input
                                     type="hidden"
                                     name="id"
@@ -267,7 +306,16 @@ function AdminNewsList() {
                                     type="submit"
                                     className="text-red-600 hover:text-red-900 flex items-center gap-1"
                                   >
-                                    <FiTrash2 /> Delete
+                                    {isDeleting ? (
+                                      <>
+                                        <FiLoader className="animate-spin" />{" "}
+                                        Deleting...
+                                      </>
+                                    ) : (
+                                      <>
+                                        <FiTrash2 /> Delete
+                                      </>
+                                    )}
                                   </button>
                                 </form>
                               </div>

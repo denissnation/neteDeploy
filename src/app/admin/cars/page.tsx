@@ -7,9 +7,9 @@ import {
   FiPlus,
   FiChevronLeft,
   FiChevronRight,
+  FiLoader,
 } from "react-icons/fi";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useFormState } from "react-dom";
 import { Suspense, useEffect, useState } from "react";
 import { Vehicle } from "../../vehicle/types/vehicle";
 import NotificationBanner from "../../components/NotificationBanner";
@@ -30,48 +30,81 @@ function AdminCarList() {
     type: "success",
     show: false,
   });
-  const initialState = {
-    success: false,
-    error: null,
-    message: "",
-  };
-  interface State {
-    success: boolean;
-    error: string | null;
-    message: string;
-  }
+
   const { page, per_page } = useParams();
   const [cars, setCars] = useState<Vehicle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [state, formAction] = useFormState<State, FormData>(
-    async (prevState, formData) => {
-      try {
-        // await deleteVehicle(prevState, formData);
-        const response = await fetch("/api/vehicles", {
-          method: "DELETE",
-          body: formData,
-        });
-        const data = await response.json();
-        if (data.success) {
-          setNotification({
-            message: "Vehicle deleted successfully!",
-            type: "success",
-            show: true,
-          });
-        }
-        return { ...prevState, success: true };
-      } catch (error) {
-        console.error(error);
+  const [isDeleting, setIsDeleting] = useState(false);
+  // const [state, formAction] = useFormState<State, FormData>(
+  //   async (prevState, formData) => {
+  //     const vehicleId = formData.get("id") as string;
+  //     setIsDeleting(Number(vehicleId));
+  //     console.log(vehicleId);
+  // try {
+  //   const response = await fetch("/api/vehicles", {
+  //     method: "DELETE",
+  //     body: formData,
+  //   });
+  //   const data = await response.json();
+  //   if (data.success) {
+  //     setNotification({
+  //       message: "Vehicle deleted successfully!",
+  //       type: "success",
+  //       show: true,
+  //     });
+  //     setIsDeleting(null);
+  //   }
+  //   return { ...prevState, success: true };
+  // } catch (error) {
+  //   console.error(error);
+  //   setNotification({
+  //     message: "Failed to delete vehicle",
+  //     type: "error",
+  //     show: true,
+  //   });
+  //   return { ...prevState, error: "Delete failed" };
+  // }
+  //   },
+  //   initialState
+  // );
+  const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsDeleting(true);
+    const formData = new FormData(e.currentTarget);
+    const vehicleId = formData.get("id");
+    try {
+      const response = await fetch("/api/vehicles", {
+        method: "DELETE",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        // Show success notification
+        setCars((prevCars) =>
+          prevCars.filter((car) => car.vehicle_id !== Number(vehicleId))
+        );
         setNotification({
-          message: "Failed to delete vehicle",
-          type: "error",
+          message: "Vehicle deleted successfully!",
+          type: "success",
           show: true,
         });
-        return { ...prevState, error: "Delete failed" };
+        // window.location.reload();
+        // You might want to refresh the page or update the state
       }
-    },
-    initialState
-  );
+    } catch (error) {
+      console.error("Delete failed:", error);
+      setNotification({
+        message: "Failed to delete vehicle",
+        type: "error",
+        show: true,
+      });
+      // return { ...prevState, error: "Delete failed" };
+      // Show error notification
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   useEffect(() => {
     const updateStatus = searchParams.get("update");
@@ -116,7 +149,7 @@ function AdminCarList() {
     };
 
     fetchCar();
-  }, [state, notification.show, router, searchParams]);
+  }, [notification.show, router, searchParams]);
 
   let currentPage = Number(page) || 1;
   const perPage = Number(per_page) || 10;
@@ -271,27 +304,44 @@ function AdminCarList() {
                                 >
                                   <FiEdit /> Edit
                                 </Link>
-                                <form action={formAction}>
+                                <form onSubmit={handleDelete}>
                                   <input
                                     type="hidden"
                                     name="id"
+                                    id="id"
                                     value={car.vehicle_id}
                                   />
                                   <input
                                     type="hidden"
                                     name="banner"
+                                    id="banner"
                                     value={car.vehicle_banner}
                                   />
                                   <input
                                     type="hidden"
                                     name="image"
+                                    id="image"
                                     value={car.vehicle_img}
                                   />
                                   <button
                                     type="submit"
-                                    className="text-red-600 hover:text-red-900 flex items-center gap-1"
+                                    disabled={isDeleting}
+                                    className={`flex items-center gap-1 ${
+                                      isDeleting
+                                        ? "text-gray-400 cursor-not-allowed"
+                                        : "text-red-600 hover:text-red-900"
+                                    }`}
                                   >
-                                    <FiTrash2 /> Delete
+                                    {isDeleting ? (
+                                      <>
+                                        <FiLoader className="animate-spin" />{" "}
+                                        Deleting...
+                                      </>
+                                    ) : (
+                                      <>
+                                        <FiTrash2 /> Delete
+                                      </>
+                                    )}
                                   </button>
                                 </form>
                               </div>

@@ -16,6 +16,7 @@ export default function EditCarPage() {
   const router = useRouter();
   const [car, setCar] = useState<Vehicle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     harga: "",
@@ -157,10 +158,10 @@ export default function EditCarPage() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
+    const formDatas = new FormData();
 
     try {
-      const formDatas = new FormData();
       formDatas.append("id", carsId.toString());
       // Append text data
       formDatas.append("nama", formData.name);
@@ -578,7 +579,7 @@ export default function EditCarPage() {
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300"
                 disabled={isLoading}
               >
-                {isLoading ? (
+                {isSubmitting ? (
                   <div className="flex items-center justify-center">
                     <span>Menyimpan...</span>
                     <svg
