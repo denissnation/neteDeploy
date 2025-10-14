@@ -19,46 +19,49 @@ interface MobileNavLinkProps extends NavLinkProps {
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, setAuthData } = useAuth();
+  const { isAuthenticated, setAuthData, isLoading } = useAuth();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    // click-outside handler
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setDropdownOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    // scroll handler
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-        setDropdownOpen(false);
-      } else {
-        setDropdownOpen(false);
-        setIsScrolled(false);
-      }
+      const scrolled = window.scrollY > 50;
+      setIsScrolled(scrolled);
+      setDropdownOpen(false);
     };
+
+    // media query + handler
     const mediaQuery = window.matchMedia("(min-width: 640px)");
     const handleMediaChange = (e: MediaQueryListEvent) => {
       if (e.matches) setIsOpen(false);
     };
+
+    // run initial checks
     handleScroll();
     if (mediaQuery.matches) setIsOpen(false);
 
-    // Add listeners
+    // add listeners
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     mediaQuery.addEventListener("change", handleMediaChange);
-    window.addEventListener("scroll", handleScroll);
+    // ✅ Type-safe media query listener
+
+    // Cleanup
     return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
       mediaQuery.removeEventListener("change", handleMediaChange);
     };
@@ -77,8 +80,8 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? " bg-[#333333]" : "bg-[#333333]"
-      } `}
+        isScrolled ? "bg-[#a8a5a5]/80 backdrop-blur-md" : "bg-[#333333]"
+      }`}
     >
       <div className={`max-w-6xl mx-auto sm:px-4`}>
         <div className="flex justify-between items-center pl-4 sm:pl-0 py-3 sm:py-6">
@@ -102,7 +105,7 @@ export default function Navbar() {
             <NavLink href="/">Beranda</NavLink>
             <NavLink href="/news">Berita</NavLink>
             <NavLink href="/contact">Testimoni</NavLink>
-            {isAuthenticated && (
+            {!isLoading && isAuthenticated && (
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -132,13 +135,13 @@ export default function Navbar() {
                       href="/admin/cars"
                       className="block px-4 py-2 text-black sm:text-[#ffff] hover:bg-[#d7000f] rounded-lg transition-colors duration-200"
                     >
-                      Daftar Mobil
+                      Kelola Mobil
                     </Link>
                     <Link
                       href="/admin/news"
                       className="block px-4 py-2 text-[#ffff] hover:text-[#d7000f] transition-colors duration-200"
                     >
-                      Daftar Berita
+                      Kelola Berita
                     </Link>
                     <button
                       // onClick={() => signOut()}
@@ -169,10 +172,10 @@ export default function Navbar() {
         {isOpen && (
           <div className="sm:hidden mt-1 pb-4 space-y-2 px-4 bg-[#ffff]">
             <MobileNavLink href="/" onClick={() => setIsOpen(false)}>
-              Home
+              Beranda
             </MobileNavLink>
             <MobileNavLink href="/news" onClick={() => setIsOpen(false)}>
-              News
+              Berita
             </MobileNavLink>
             <MobileNavLink href="/testimoni" onClick={() => setIsOpen(false)}>
               Testimoni
@@ -206,13 +209,13 @@ export default function Navbar() {
                     href="/admin/cars"
                     className="block px-4 py-2 text-black sm:text-[#ffff] hover:bg-[#d7000f] rounded-lg transition-colors duration-200"
                   >
-                    Vehicle
+                    Kelola Mobil
                   </Link>
                   <Link
                     href="/admin/news"
                     className="block px-4 py-2 text-black sm:text-[#ffff] hover:bg-[#d7000f] rounded-lg transition-colors duration-200"
                   >
-                    News
+                    Kelola Berita
                   </Link>
                   <button
                     onClick={handleLogout}

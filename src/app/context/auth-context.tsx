@@ -17,11 +17,13 @@ type AuthContextType = {
   isAuthenticated: boolean;
   user: User | null;
   setAuthData: (data: AuthState) => void;
+  isLoading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
+  isLoading: true,
   setAuthData: () => {},
 });
 
@@ -30,16 +32,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isAuthenticated: false,
     user: null,
   });
+
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
 
   // Sync auth state with server
   useEffect(() => {
     const verifyAuth = async () => {
-      const { user } = await validateRequest();
-      if (user) {
-        setAuthState({ isAuthenticated: true, user });
-      } else {
+      try {
+        const { user } = await validateRequest();
+        if (user) {
+          setAuthState({ isAuthenticated: true, user });
+        } else {
+          setAuthState({ isAuthenticated: false, user: null });
+        }
+      } catch (error) {
+        console.error("Auth verification failed:", error);
         setAuthState({ isAuthenticated: false, user: null });
+      } finally {
+        setIsLoading(false); // Stop loading after verification
       }
     };
     verifyAuth();
@@ -50,6 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         isAuthenticated: authState.isAuthenticated,
         user: authState.user,
+        isLoading,
         setAuthData: setAuthState,
       }}
     >
